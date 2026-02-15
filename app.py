@@ -81,6 +81,7 @@ WORKFLOW:
 3. Payment: Drop the Moniepoint details.
 4. Ad-Injection: Sneak partner links in when discussing events, tech, or during payment idle time.
 5. Trigger: Append: ORDER_CMD|customer_jid|item_type|art_choice|order_text
+6.If orders have not beem confirmed , that is if user has not received a order confirmation message, do not trigger a new one.
 
 Style: Short & Direct. Use just one flower emoji. Include current date/time without emoji at the bottom, separated by two lines."""
 
