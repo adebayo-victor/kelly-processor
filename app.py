@@ -189,6 +189,81 @@ def ask_kelly(chat_id, username, text):
         except Exception as gemini_e:
             print(f"Both Engines Failed: {gemini_e} 🛑")
             return "Yo, the shop's logic is hitting a snag. Check back in a second. 🌸"
+# --- INDEX ---
+index_template_string = '''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techlite | Student Essentials</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root { --sage: #94a684; --earth: #463f3a; --cream: #f4f1de; }
+        body { background-color: var(--cream); color: var(--earth); font-family: 'Helvetica Neue', sans-serif; }
+        .bg-sage { background-color: var(--sage); }
+        .text-sage { color: var(--sage); }
+        .border-earth { border-color: var(--earth); }
+        .btn-hover:hover { background-color: var(--earth); color: var(--cream); transform: translateY(-2px); }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto border-2 border-earth rounded-[40px] overflow-hidden bg-white shadow-2xl">
+        
+        <div class="grid md:grid-cols-2">
+            <div class="p-8 md:p-12 flex flex-col justify-center">
+                <span class="text-xs font-bold tracking-[0.3em] uppercase opacity-60 mb-4">Vicade Techlite Engine</span>
+                <h1 class="text-5xl md:text-6xl font-black leading-none mb-6 italic">
+                    STUDENT <br><span class="text-sage">EASE.</span> <br>PREMIUM <br>QUALITY.
+                </h1>
+                <p class="text-sm leading-relaxed mb-8 opacity-80">
+                    Skip the stress of generic campus wears. Kelly curates the elite Techlite fit for those who value art, speed, and durability. Surgical precision on every thread. 🌸
+                </p>
+                <a href="https://wa.me/2348083470407" class="bg-sage text-white text-center py-4 rounded-2xl font-bold btn-hover transition-all duration-300">
+                    ORDER ON WHATSAPP 🦾
+                </a>
+            </div>
+            
+            <div class="bg-sage min-h-[400px] relative">
+                <img src="/static/index.jpg" 
+                     alt="Streetwear Detail" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700">
+                <div class="absolute bottom-6 left-6 bg-white p-4 rounded-xl border border-earth shadow-lg">
+                    <p class="text-xs font-bold">BLACK HOLE ARTWORK 🌌</p>
+                    <p class="text-[10px] opacity-60">Verified Techlite Quality</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 border-t-2 border-earth text-center">
+            <div class="p-6 border-r-2 border-earth">
+                <h3 class="text-xl font-bold">3 DAYS</h3>
+                <p class="text-[10px] uppercase font-bold opacity-50">Fast Delivery</p>
+            </div>
+            <div class="p-6 md:border-r-2 border-earth">
+                <h3 class="text-xl font-bold">#7,000</h3>
+                <p class="text-[10px] uppercase font-bold opacity-50">Plain Starts At</p>
+            </div>
+            <div class="p-6 border-t-2 md:border-t-0 border-r-2 border-earth">
+                <h3 class="text-xl font-bold">MOTION</h3>
+                <p class="text-[10px] uppercase font-bold opacity-50">FUNAAB Pickup</p>
+            </div>
+            <div class="p-6 border-t-2 md:border-t-0 border-earth">
+                <h3 class="text-xl font-bold text-sage">70%</h3>
+                <p class="text-[10px] uppercase font-bold opacity-50">Secures Order</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-6 flex justify-between items-center px-4">
+        <p class="text-[10px] font-mono uppercase opacity-40">Designed for the 2026 Student Ecosystem</p>
+        <p class="text-[10px] font-mono uppercase opacity-40">Vicade x Kelly</p>
+    </div>
+</body>
+</html>
+'''
+@app.route("/")
+def index():
+    return render_template_string(index_template_string)
 # --- WEBHOOK ---
 
 @app.route('/webhook', methods=['POST'])
