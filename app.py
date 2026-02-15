@@ -82,7 +82,7 @@ WORKFLOW:
 4. Ad-Injection: Sneak partner links in when discussing events, tech, or during payment idle time.
 5. Trigger: Append: ORDER_CMD|customer_jid|item_type|art_choice|order_text
 6.If orders have not beem confirmed , that is if user has not received a order confirmation message for a product or request, do not trigger a new one. To recognize triggered order confirmation order, you will see "A pending money transfer request has been made".
-
+7.Ocassionally add an ad-alert below the time advertising one of the partners in square brackets
 
 Style: Short & Direct. Use just one flower emoji. Include current date/time without emoji at the bottom, separated by two lines."""
 
@@ -337,7 +337,7 @@ def webhook():
             clean_reply = reply_text.split("ORDER_CMD")[0].strip()
             send_msg(chat_id, clean_reply)
             send_msg(chat_id, f"A pending money transfer request has been made, make your transfer of the amount below and it will be confirmed\n{reply_text}")
-            send_msg(VICADE_JID, f"kelly:request_confirmation {oid}\n{reply_text}")
+            send_msg(VICADE_JID, f"kelly:request_confirmation {oid}\n{reply_text}\nby:{username}")
         else:
             time.sleep(random.uniform(1, 3))
             send_msg(chat_id, reply_text)
