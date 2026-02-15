@@ -43,7 +43,7 @@ db = SQL(os.environ.get("DATABASE_URL"))
 
 # --- CONFIGURATION ---
 VICADE_JID = "2348136390030@s.whatsapp.net" 
-NODE_SEND_URL = "http://127.0.0.1:3000/send"
+NODE_SEND_URL = "https://kelly-gateway.onrender.com/send"
 # Replace with your actual key
 client = Groq(api_key=os.environ.get("groq_api_key")) 
 GALLERY_LINK = "https://kelly-pvd2.onrender.com/gallery"
