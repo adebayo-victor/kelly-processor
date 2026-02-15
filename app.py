@@ -146,13 +146,27 @@ def get_memory(chat_id):
         "flow": "\n".join(lines[-15:]),
         "recalls": "\n".join(lines[-40:-15])
     }
+intro_text = '''
+"Yo! I'm Kelly, your direct plug for Vicade Techlite. 🌸🦾
 
+We don't do basic campus wear here. We do surgical precision and Black Hole artistry. Whether you want a clean plain fit or a high-tier custom print, I’m here to direct the flow. 🌌
+
+THE QUICK START:
+
+Browse the Gallery: [https://kelly-processor.onrender.com/gallery] 🎒
+
+Pick Your Vibe: Plain (#7k), Standard (#10k), or Custom Black Hole (#15k+).
+
+The Rule: 70% deposit secures your slot. 💳
+
+The Drop: 3-day production. Pickup is strictly at Motion Ground, FUNAAB (3 PM - 4 PM). 🏫🛠️
+'''
 def handle_customer_entry(jid, username):
     """Welcomes new customers."""
     rows = db.execute("SELECT * FROM customers WHERE jid = ?", jid)
     if len(rows) == 0:
         db.execute("INSERT INTO customers (jid, username) VALUES (?, ?)", jid, username)
-        send_msg(jid, "Yo! I'm Kelly. Welcome to the shop. Pick a wear and check the art gallery to start. 🌸")
+        send_msg(jid, intro_text)
         return False
     return True
 
