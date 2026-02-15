@@ -307,8 +307,8 @@ def webhook():
         else:
             send_msg(VICADE_JID, f"Command execution failed for this order_id: {order_id}")
     if "FetchDbData" in text and username == "Vicade":
-        db = display_full_database_summary()
-        send_msg(VICADE_JID, db)
+        full_db = display_full_database_summary()
+        send_msg(VICADE_JID, full_db)
 
     try:
         mem = get_memory(chat_id)
