@@ -83,39 +83,49 @@ WORKFLOW:
 5. Trigger: Append: ORDER_CMD|customer_jid|item_type|art_choice|order_text
 6.If orders have not beem confirmed , that is if user has not received a order confirmation message, do not trigger a new one.
 
+
 Style: Short & Direct. Use just one flower emoji. Include current date/time without emoji at the bottom, separated by two lines."""
 
 # --- HELPERS ---
 def display_full_database_summary():
-    """Fetches and displays all data from all tables in a structured layout."""
+    """Surgically fetches data and returns a safe string representation."""
+    output = []
     
-    tables = {
-        "CUSTOMERS": db.execute("SELECT * FROM customers"),
-        "CHAT LOGS": db.execute("SELECT * FROM chat_logs"),
-        "ORDERS": db.execute("SELECT * FROM orders")
-    }
+    try:
+        tables = {
+            "CUSTOMERS": db.execute("SELECT * FROM customers"),
+            "CHAT LOGS": db.execute("SELECT * FROM chat_logs"),
+            "ORDERS": db.execute("SELECT * FROM orders")
+        }
+    except Exception as e:
+        return f"Database Error: {e} 🩸"
 
-    print(f"\n🚀 SYSTEM DATA OVERVIEW | {os.getenv('DATABASE_URL')}")
+    output.append(f"🚀 SYSTEM DATA OVERVIEW | {time.strftime('%Y-%m-%d %H:%M:%S')}")
     
     for table_name, rows in tables.items():
-        print(f"\n--- {table_name} ({len(rows)} entries) ---")
+        output.append(f"\n--- {table_name} ({len(rows)} entries) ---")
         
-        if not rows:
-            print("   (Empty)")
+        # 1. Guard against empty rows to avoid IndexError
+        if not rows or len(rows) == 0:
+            output.append("   (No data found in this sector.)")
             continue
 
-        # Get column names from the first dictionary keys
-        headers = rows[0].keys()
-        header_str = " | ".join([h.upper().ljust(15) for h in headers])
-        print(header_str)
-        print("-" * len(header_str))
+        try:
+            # 2. Extract headers safely
+            headers = list(rows[0].keys())
+            header_str = " | ".join([h.upper().ljust(15) for h in headers])
+            output.append(header_str)
+            output.append("-" * len(header_str))
 
-        for row in rows:
-            # Clean history/text for display (removes newlines)
-            line = " | ".join([str(row[h]).replace('\n', ' ')[:15].ljust(15) for h in headers])
-            print(line)
+            for row in rows:
+                # 3. Clean and truncate data to keep it punchy
+                line = " | ".join([str(row.get(h, "N/A")).replace('\n', ' ')[:15].ljust(15) for h in headers])
+                output.append(line)
+        except (IndexError, KeyError) as e:
+            output.append(f"   [Data Corruption/Index Error: {e}]")
 
-    print("\n" + "="*50)
+    output.append("\n" + "="*50)
+    return "\n".join(output)
 
 def send_msg(jid, message):
     """Sends message to the Node.js server."""
@@ -326,7 +336,8 @@ def webhook():
             
             clean_reply = reply_text.split("ORDER_CMD")[0].strip()
             send_msg(chat_id, clean_reply)
-            send_msg(VICADE_JID, f"kelly:request_confirmation {oid}")
+            send_msg(chat_id, f"A pending money transfer request has been made, make your transfer of the amount below and it will be confirmed\n{reply_text}")
+            send_msg(VICADE_JID, f"kelly:request_confirmation {oid}\n{reply_text}")
         else:
             time.sleep(random.uniform(1, 3))
             send_msg(chat_id, reply_text)
