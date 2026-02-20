@@ -281,9 +281,13 @@ def webhook():
     chat_id = data.get('chatId')
     text = data.get('text', '')
     username = data.get('username')
+    is_group = data.get("isGroup")
     # 1. CUSTOMER LOGIC 🛍️
     maintain_memory(username, text, chat_id)
     if not handle_customer_entry(chat_id, username):
+        return "OK", 200
+    #Avoid groups:
+    if is_group:
         return "OK", 200
     #Commands from vicade
     if "ConfirmOrder==>|" in text and username == "Vicade":
